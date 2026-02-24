@@ -3,7 +3,7 @@ const { Telegraf, Markup } = require('telegraf');
 const fs = require('fs');
 const path = require('path');
 const XLSX = require('xlsx');
-
+const express = require('express');
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 const DB_PATH = path.join(__dirname, 'data', 'db.json');
@@ -374,6 +374,23 @@ function exportExcel(ctx) {
 
   ctx.telegram.sendDocument(process.env.ADMIN_ID, { source: filePath });
 }
+
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Rejection:', err);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Bot ishlayapti 🚀');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
 
 bot.launch();
 console.log('HR bot ishlayapti 🚀');
