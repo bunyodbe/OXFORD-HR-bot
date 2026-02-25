@@ -16,7 +16,7 @@ if (fs.existsSync(DB_PATH)) {
   fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
 }
 
-const branches = ['Oxford (Chorsu)', 'Oxford Kosonsoy', 'Oxford Uychi'];
+const branches = ['Oxford (Chorsu)', 'Oxford (Kosonsoy)', 'Oxford (Uychi)'];
 
 const positions = [
   'IELTS Instructor', 'General English Teacher', 'Support Teacher',
@@ -91,7 +91,7 @@ bot.start(async (ctx) => {
   }
 
   ctx.reply(
-    'Assalomu alaykum!\nOxford jamoasiga qo‘shilish uchun qisqa arizani to‘ldiring.',
+    "Assalomu alaykum!\nOxford jamoasiga qo‘shilish uchun qisqa arizani to‘ldiring. (1–2 daqiqa vaqt oladi)",
     Markup.inlineKeyboard([[Markup.button.callback('Ariza yuborish', 'start_application')]])
   );
 });
@@ -129,7 +129,7 @@ bot.on('callback_query', async (ctx) => {
     }
 
     userData[chatId] = { step: 'name', data: {} };
-    return ctx.editMessageText('Ism va familiyangizni kiriting:');
+    return ctx.editMessageText('Ism va familiyangizni kiriting: \n (Masalan: Aliyev Azizbek)');
   }
 
   if (data === 'edit_menu') {
@@ -184,7 +184,7 @@ bot.on('callback_query', async (ctx) => {
     } else {
       userData[chatId].data.position = data;
       userData[chatId].step = 'experience';
-      return ctx.editMessageText('Tajribangizni yozing:');
+      return ctx.editMessageText("Shu yo‘nalishda nechchi yil tajribangiz bor? \n (Qisqacha yozing, Masalan: 2 yil IELTS instructor, 1 yil maktabda)");
     }
   }
 
@@ -273,20 +273,20 @@ bot.on('text', async (ctx) => {
     if (step === 'name') {
       userData[chatId].data.name = text;
       userData[chatId].step = 'age';
-      return ctx.reply('Yoshingiz?');
+      return ctx.reply('Yoshingiz nechida? \n (Faqat raqam kiriting)');
     }
 
     if (step === 'age') {
       if (isNaN(text)) return ctx.reply('Faqat raqam kiriting.');
       userData[chatId].data.age = text;
       userData[chatId].step = 'phone';
-      return ctx.reply('Telefon raqam:');
+      return ctx.reply('Telefon raqamingizni kiriting: \n (Masalan: +998901234567)');
     }
 
     if (step === 'phone') {
       userData[chatId].data.phone = text;
       userData[chatId].step = 'branch';
-      return ctx.reply('Filial tanlang:',
+      return ctx.reply('Qaysi filialda ishlamoqchisiz?',
         Markup.inlineKeyboard(branches.map(b => [Markup.button.callback(b, b)]))
       );
     }
@@ -294,7 +294,7 @@ bot.on('text', async (ctx) => {
     if (step === 'experience') {
       userData[chatId].data.experience = text;
       userData[chatId].step = 'photo';
-      return ctx.reply('Rasmingizni yuboring:');
+      return ctx.reply("O‘zingizning rasm (foto)ingizni yuklang! \n (Rasm yubormasangiz arizangiz ko'rib chiqilmaydi!)");
     }
 
     if (userData[chatId].editing) {
