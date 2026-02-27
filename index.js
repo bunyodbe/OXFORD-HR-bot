@@ -40,7 +40,7 @@ function formatApplication(app) {
     `1️⃣ Ism: ${app.name || ''}`,
     `2️⃣ Yosh: ${app.age || ''}`,
     `3️⃣ Telefon: ${app.phone || ''}`,
-    `4️⃣ QO'shimcha ma'lumot: ${app.experience || ''}`
+    `4️⃣ Qo'shimcha ma'lumot: ${app.experience || ''}`
   ].join('\n');
 }
 
@@ -361,7 +361,7 @@ function exportExcel(ctx) {
     Ism: a.name,
     Yosh: a.age,
     Telefon: a.phone,
-    Tajriba: a.experience,
+    Malumot: a.experience,
     Status: a.status,
     Admin_Izoh: a.adminComment || ''
   }));
