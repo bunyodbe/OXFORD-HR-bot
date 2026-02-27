@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const { Telegraf, Markup } = require('telegraf');
 const fs = require('fs');
@@ -39,7 +40,7 @@ function formatApplication(app) {
     `1️⃣ Ism: ${app.name || ''}`,
     `2️⃣ Yosh: ${app.age || ''}`,
     `3️⃣ Telefon: ${app.phone || ''}`,
-    `4️⃣ Tajriba: ${app.experience || ''}`
+    `4️⃣ QO'shimcha ma'lumot: ${app.experience || ''}`
   ].join('\n');
 }
 
@@ -91,7 +92,7 @@ bot.start(async (ctx) => {
   }
 
   ctx.reply(
-    "Assalomu alaykum!\nOxford jamoasiga qo‘shilish uchun qisqa arizani to‘ldiring. (1–2 daqiqa vaqt oladi)",
+    "Assalomu alaykum!\nOxford oilasiga qo‘shilish uchun ariza qoldiring! (1–2 daqiqa vaqt oladi)",
     Markup.inlineKeyboard([[Markup.button.callback('Ariza yuborish', 'start_application')]])
   );
 });
@@ -184,7 +185,7 @@ bot.on('callback_query', async (ctx) => {
     } else {
       userData[chatId].data.position = data;
       userData[chatId].step = 'experience';
-      return ctx.editMessageText("Shu yo‘nalishda nechchi yil tajribangiz bor? \n (Qisqacha yozing, Masalan: 2 yil IELTS instructor, 1 yil maktabda)");
+      return ctx.editMessageText("Sertifikatingiz, qaysi vaqtlarda ishlay olishingiz va tajribangiz haqida qisqacha yozing: \n\n (Masalan: IELTS: 7; To'liq kunlik / Tushlikgacha / Tushlikdan keyin; 2 yil o'qitishda tajribam bor)");
     }
   }
 
@@ -211,7 +212,7 @@ bot.on('callback_query', async (ctx) => {
 
     delete userData[chatId];
 
-    return ctx.reply('Rahmat! Arizangiz qabul qilindi.');
+    return ctx.reply("Rahmat! Arizangiz muvaffaqiyatli qabul qilindi. \n 3 ish kuni ichida natija bo‘yicha siz bilan bog‘lanamiz.");
   }
 
   if (data.startsWith('admin_')) {
@@ -273,11 +274,11 @@ bot.on('text', async (ctx) => {
     if (step === 'name') {
       userData[chatId].data.name = text;
       userData[chatId].step = 'age';
-      return ctx.reply('Yoshingiz nechida? \n (Faqat raqam kiriting)');
+      return ctx.reply('Yoshingiz nechida? \n (Faqat raqam kiriting!)');
     }
 
     if (step === 'age') {
-      if (isNaN(text)) return ctx.reply('Faqat raqam kiriting.');
+      if (isNaN(text)) return ctx.reply('Faqat raqam kiriting!');
       userData[chatId].data.age = text;
       userData[chatId].step = 'phone';
       return ctx.reply('Telefon raqamingizni kiriting: \n (Masalan: +998901234567)');
